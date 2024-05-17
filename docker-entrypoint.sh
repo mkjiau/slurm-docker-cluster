@@ -35,8 +35,17 @@ then
     done
     echo "-- slurmdbd is now active ..."
 
+    # slurm-web
+    echo "---> Starting the Slurm Web ..."
+    # exec gosu slurm slurmrestd unix:/run/slurmrestd/slurmrestd.socket
+    (gosu slurm slurmrestd unix:/run/slurmrestd/slurmrestd.socket 2>&1 | awk '{print "[slurmrestd] " $0}' &)
+    # python /usr/libexec/slurm-web/slurm-web-agent
+    (python /usr/libexec/slurm-web/slurm-web-agent 2>&1 | awk '{print "[slurm-web-agent] " $0}' &) 
+    # python /usr/libexec/slurm-web/slurm-web-gateway
+    (python /usr/libexec/slurm-web/slurm-web-gateway 2>&1 | awk '{print "[slurm-web-gateway] " $0}' &)
+
     echo "---> Starting the Slurm Controller Daemon (slurmctld) ..."
-    if /usr/sbin/slurmctld -V | grep -q '17.02' ; then
+    if /usr/sbin/slurmctld -V | grep -q '23.02' ; then
         exec gosu slurm /usr/sbin/slurmctld -Dvvv
     else
         exec gosu slurm /usr/sbin/slurmctld -i -Dvvv

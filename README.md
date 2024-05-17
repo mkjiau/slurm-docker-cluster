@@ -52,6 +52,12 @@ Run `docker-compose` to instantiate the cluster:
 IMAGE_TAG=19.05.2 docker-compose up -d
 ```
 
+`new` slurm + slurm-web
+```console
+SLURM_TAG=slurm-23-02-6-1 IMAGE_TAG=23.02 docker-compose up --build
+```
+
+
 ## Register the Cluster with SlurmDBD
 
 To register the cluster to the slurmdbd daemon, run the `register_cluster.sh`

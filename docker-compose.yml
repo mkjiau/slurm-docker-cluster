@@ -32,6 +32,7 @@ services:
       - mysql
 
   slurmctld:
+    privileged: true
     image: slurm-docker-cluster:${IMAGE_TAG:-21.08}
     command: ["slurmctld"]
     container_name: slurmctld
@@ -43,6 +44,11 @@ services:
       - var_log_slurm:/var/log/slurm
     expose:
       - "6817"
+      - "5011"
+      - "5012"
+    ports:
+      - 5011:5011
+      - 5012:5012
     depends_on:
       - "slurmdbd"
 
